@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import '../theme_provider.dart';
 
 class LibraryTab extends StatelessWidget {
-  const LibraryTab({super.key});
+  final ThemeProvider themeProvider;
+
+  const LibraryTab({super.key, required this.themeProvider});
 
   @override
   Widget build(BuildContext context) {
@@ -10,16 +13,25 @@ class LibraryTab extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text('Game Library'),
+        title: Text(
+          'Game Library',
+          style: TextStyle(
+            color: themeProvider.isDarkMode ? Colors.white : Colors.black,
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'Your Game Collection',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: themeProvider.isDarkMode ? Colors.white : Colors.black,
+              ),
             ),
             const SizedBox(height: 16),
             Expanded(
@@ -65,6 +77,7 @@ class LibraryTab extends StatelessWidget {
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,
+                                    color: Colors.white,
                                   ),
                                 ),
                                 const SizedBox(height: 4),

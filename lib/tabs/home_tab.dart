@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import '../widgets/game_card.dart';
+import '../theme_provider.dart';
 
 class HomeTab extends StatelessWidget {
-  const HomeTab({super.key});
+  final ThemeProvider themeProvider;
+
+  const HomeTab({super.key, required this.themeProvider});
 
   @override
   Widget build(BuildContext context) {
@@ -13,21 +16,39 @@ class HomeTab extends StatelessWidget {
         elevation: 0,
         title: Row(
           children: [
-            Icon(Icons.videogame_asset, color: Colors.blue.shade500),
+            Icon(
+              Icons.videogame_asset,
+              color:
+                  themeProvider.isDarkMode
+                      ? Colors.blue.shade500
+                      : Colors.blue.shade700,
+            ),
             const SizedBox(width: 8),
-            const Text(
+            Text(
               'PLAYHAVEN',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: themeProvider.isDarkMode ? Colors.white : Colors.black,
+              ),
             ),
           ],
         ),
         actions: [
-          IconButton(icon: const Icon(Icons.search), onPressed: () {}),
+          IconButton(
+            icon: Icon(
+              Icons.search,
+              color: themeProvider.isDarkMode ? Colors.white : Colors.black,
+            ),
+            onPressed: () {},
+          ),
           Padding(
             padding: const EdgeInsets.only(right: 16),
             child: CircleAvatar(
               radius: 16,
-              backgroundColor: Colors.blue.shade800,
+              backgroundColor:
+                  themeProvider.isDarkMode
+                      ? Colors.blue.shade800
+                      : Colors.blue.shade600,
               child: const Text('U'),
             ),
           ),
@@ -74,6 +95,7 @@ class HomeTab extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
+                                color: Colors.white,
                               ),
                             ),
                             const SizedBox(height: 8),
@@ -82,7 +104,10 @@ class HomeTab extends StatelessWidget {
                                 ElevatedButton(
                                   onPressed: () {},
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.blue.shade700,
+                                    backgroundColor:
+                                        themeProvider.isDarkMode
+                                            ? Colors.blue.shade700
+                                            : Colors.blue.shade600,
                                     foregroundColor: Colors.white,
                                     minimumSize: const Size(80, 36),
                                   ),
@@ -91,11 +116,20 @@ class HomeTab extends StatelessWidget {
                                 const SizedBox(width: 8),
                                 OutlinedButton.icon(
                                   onPressed: () {},
-                                  icon: const Icon(Icons.download),
-                                  label: const Text('2.1 GB'),
+                                  icon: const Icon(
+                                    Icons.download,
+                                    color: Colors.white,
+                                  ),
+                                  label: const Text(
+                                    '2.1 GB',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
                                   style: OutlinedButton.styleFrom(
-                                    side: const BorderSide(
-                                      color: Color(0xFF333333),
+                                    side: BorderSide(
+                                      color:
+                                          themeProvider.isDarkMode
+                                              ? const Color(0xFF333333)
+                                              : Colors.white.withOpacity(0.5),
                                     ),
                                   ),
                                 ),
@@ -115,14 +149,24 @@ class HomeTab extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  Text(
                     'New Releases',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color:
+                          themeProvider.isDarkMode
+                              ? Colors.white
+                              : Colors.black,
+                    ),
                   ),
                   TextButton(
                     onPressed: () {},
                     style: TextButton.styleFrom(
-                      foregroundColor: Colors.blue.shade400,
+                      foregroundColor:
+                          themeProvider.isDarkMode
+                              ? Colors.blue.shade400
+                              : Colors.blue.shade700,
                       padding: EdgeInsets.zero,
                     ),
                     child: const Text('View all'),
@@ -159,16 +203,23 @@ class HomeTab extends StatelessWidget {
                                   children: [
                                     Text(
                                       'Game Title ${index + 1}',
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontWeight: FontWeight.w500,
+                                        color:
+                                            themeProvider.isDarkMode
+                                                ? Colors.white
+                                                : Colors.black,
                                       ),
                                       overflow: TextOverflow.ellipsis,
                                     ),
-                                    const Text(
+                                    Text(
                                       'Action RPG',
                                       style: TextStyle(
                                         fontSize: 12,
-                                        color: Colors.grey,
+                                        color:
+                                            themeProvider.isDarkMode
+                                                ? Colors.grey
+                                                : Colors.grey.shade700,
                                       ),
                                     ),
                                   ],
@@ -186,9 +237,13 @@ class HomeTab extends StatelessWidget {
               const SizedBox(height: 24),
 
               // Your Games
-              const Text(
+              Text(
                 'Your Games',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: themeProvider.isDarkMode ? Colors.white : Colors.black,
+                ),
               ),
               const SizedBox(height: 12),
               GridView.builder(
@@ -196,7 +251,7 @@ class HomeTab extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  childAspectRatio: 1.4,
+                  childAspectRatio: 1.49,
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 12,
                 ),
@@ -206,6 +261,7 @@ class HomeTab extends StatelessWidget {
                     title: 'Installed Game ${index + 1}',
                     subtitle: 'Last played 2h ago',
                     imageUrl: 'https://picsum.photos/60/60?random=${index + 1}',
+                    themeProvider: themeProvider,
                   );
                 },
               ),

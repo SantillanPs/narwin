@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import '../theme_provider.dart';
 
 class GameCard extends StatelessWidget {
   final String title;
   final String subtitle;
   final String imageUrl;
+  final ThemeProvider themeProvider;
 
   const GameCard({
     super.key,
     required this.title,
     required this.subtitle,
     required this.imageUrl,
+    required this.themeProvider,
   });
 
   @override
@@ -37,20 +40,33 @@ class GameCard extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 14,
+                      color:
+                          themeProvider.isDarkMode
+                              ? Colors.white
+                              : Colors.black,
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
                     subtitle,
-                    style: const TextStyle(fontSize: 12, color: Colors.grey),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color:
+                          themeProvider.isDarkMode
+                              ? Colors.grey
+                              : Colors.grey.shade700,
+                    ),
                   ),
                   TextButton(
                     onPressed: () {},
                     style: TextButton.styleFrom(
-                      foregroundColor: Colors.blue.shade400,
+                      foregroundColor:
+                          themeProvider.isDarkMode
+                              ? Colors.blue.shade400
+                              : Colors.blue.shade700,
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       minimumSize: const Size(0, 28),
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,

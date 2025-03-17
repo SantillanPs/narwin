@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
+import 'theme_provider.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  final ThemeProvider themeProvider;
+
+  const LoginScreen({super.key, required this.themeProvider});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -18,7 +21,10 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.blue.shade900, Colors.black],
+            colors:
+                widget.themeProvider.isDarkMode
+                    ? [Colors.blue.shade900, Colors.black]
+                    : [Colors.blue.shade700, Colors.blue.shade100],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -50,7 +56,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   TextField(
                     controller: emailController,
                     decoration: const InputDecoration(labelText: "Email"),
-                    style: const TextStyle(color: Colors.white),
+                    style: TextStyle(
+                      color:
+                          widget.themeProvider.isDarkMode
+                              ? Colors.white
+                              : Colors.black,
+                    ),
                   ),
                   const SizedBox(height: 16),
                   // Password input field
@@ -58,7 +69,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     controller: passwordController,
                     obscureText: true,
                     decoration: const InputDecoration(labelText: "Password"),
-                    style: const TextStyle(color: Colors.white),
+                    style: TextStyle(
+                      color:
+                          widget.themeProvider.isDarkMode
+                              ? Colors.white
+                              : Colors.black,
+                    ),
                   ),
                   const SizedBox(height: 24),
                   // Login button
@@ -69,7 +85,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const HomeScreen(),
+                            builder:
+                                (context) => HomeScreen(
+                                  themeProvider: widget.themeProvider,
+                                ),
                           ),
                         );
                       } else {

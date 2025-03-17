@@ -1,73 +1,62 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'login_screen.dart';
+import 'theme_provider.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final ThemeProvider _themeProvider = ThemeProvider();
+
+  @override
+  void initState() {
+    super.initState();
     // Set system overlay style for status bar
+    _updateStatusBarColor();
+
+    // Listen to theme changes to update status bar
+    _themeProvider.addListener(_updateStatusBarColor);
+  }
+
+  void _updateStatusBarColor() {
     SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
+      SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.light,
+        statusBarIconBrightness:
+            _themeProvider.isDarkMode ? Brightness.light : Brightness.dark,
       ),
     );
+  }
 
-    return MaterialApp(
-      title: 'PlayHaven',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        brightness: Brightness.dark,
-        scaffoldBackgroundColor: Colors.black,
-        primaryColor: Colors.blue.shade900,
-        colorScheme: ColorScheme.dark(
-          primary: Colors.blue.shade900,
-          secondary: Colors.blue.shade700,
-          surface: Colors.black87,
-          background: Colors.black,
-          onBackground: Colors.white,
-        ),
-        appBarTheme: AppBarTheme(
-          backgroundColor: Colors.blue.shade900,
-          elevation: 0,
-        ),
-        bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          backgroundColor: Colors.black,
-          selectedItemColor: Colors.blue.shade500,
-          unselectedItemColor: Colors.grey,
-        ),
-        cardTheme: CardTheme(
-          color: Colors.white.withOpacity(0.1),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
-        dividerTheme: const DividerThemeData(color: Color(0xFF333333)),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.blue.shade700,
-            foregroundColor: Colors.white,
-            minimumSize: const Size(double.infinity, 50),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
-        ),
-        inputDecorationTheme: InputDecorationTheme(
-          filled: true,
-          fillColor: Colors.white24,
-          labelStyle: const TextStyle(color: Colors.white),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-        ),
-      ),
-      home: const LoginScreen(),
+  @override
+  void dispose() {
+    _themeProvider.removeListener(_updateStatusBarColor);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _themeProvider,
+      builder: (context, _) {
+        return MaterialApp(
+          title: 'PlayHaven',
+          debugShowCheckedModeBanner: false,
+          themeMode: _themeProvider.themeMode,
+          theme: _themeProvider.lightTheme,
+          darkTheme: _themeProvider.darkTheme,
+          home: LoginScreen(themeProvider: _themeProvider),
+        );
+      },
     );
   }
 }
